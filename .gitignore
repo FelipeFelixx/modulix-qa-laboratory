@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+.npm/
+
+# Build
+dist/
+build/
+coverage/
+.vite/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local databases / data
+*.db
+*.sqlite
+*.sqlite3
+database/local/
+database/data/
+
+# Logs
+*.log
+logs/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Test artifacts that may contain sensitive runtime data
+playwright-report/
+test-results/
+*.har
+
+# Certificates / private keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo

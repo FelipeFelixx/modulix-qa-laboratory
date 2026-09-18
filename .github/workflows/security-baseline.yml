@@ -1,0 +1,34 @@
+name: Security Baseline
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check tracked sensitive filenames
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden_regex='(^|/)(\.env($|\.)|.*\.(pem|key|p12|pfx)$)'
+          if git ls-files | grep -E "$forbidden_regex"; then
+            echo "Potentially sensitive tracked file detected."
+            exit 1
+          fi
+
+      - name: Check obvious secret assignments
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -n -I -E '(sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{20,})' -- ':!SECURITY.md' ':!README.md' ':!.env.example'; then
+            echo "Potential secret pattern detected."
+            exit 1
+          fi
